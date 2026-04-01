@@ -8,15 +8,15 @@
     "start": "next start"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "latest",
+    "@types/react": "^19.0.0",
+    "@types/three": "latest",
+    "framer-motion": "latest",
     "next": "latest",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@types/react": "^19.0.0",
-    "three": "latest",
-    "@types/three": "latest",
-    "@react-three/fiber": "latest",
-    "@react-three/drei": "latest",
-    "framer-motion": "latest"
+    "three": "latest"
   },
   "overrides": {
     "react": "^19.0.0",

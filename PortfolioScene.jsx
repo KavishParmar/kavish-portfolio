@@ -1,45 +1,38 @@
 'use client';
 import React, { useRef } from "react";
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, OrbitControls, Stars, Text, MeshDistortMaterial } from '@react-three/drei';
+import { Float, Stars, Text, ScrollControls, Scroll, useScroll } from '@react-three/drei';
 
-function GlassCard({ position, color, title }) {
-  const mesh = useRef();
+function SceneContent() {
+  const scroll = useScroll();
+  
   useFrame((state) => {
-    mesh.current.rotation.y = Math.sin(state.clock.getElapsedTime()) * 0.2;
+    const r = scroll.offset;
+    state.camera.position.set(0, 0, 10 - r * 10); 
   });
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
-      <mesh ref={mesh} position={position}>
-        <boxGeometry args={[2, 3, 0.2]} />
-        <meshPhysicalMaterial 
-          color={color} 
-          roughness={0.1} 
-          metalness={0.1} 
-          transparent={true} 
-          opacity={0.8}
-        />
-        <Text position={[0, 0, 0.15]} fontSize={0.3} color="white" anchorX="center" anchorY="middle">
-          {title}
-        </Text>
-      </mesh>
-    </Float>
+    <>
+      <Stars radius={100} depth={50} count={5000} factor={4} />
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+        <Text fontSize={1} position={[0, 2, 0]}>Kavish Parmar</Text>
+        <Text fontSize={0.5} position={[0, 0, 0]}>AI & Robotics Enthusiast</Text>
+      </Float>
+    </>
   );
 }
 
 export default function PortfolioScene() {
   return (
-    <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-      
-      <GlassCard position={[-3, 0, 0]} color="#4f46e5" title="AI Projects" />
-      <GlassCard position={[0, 0, 0]} color="#db2777" title="Robotics" />
-      <GlassCard position={[3, 0, 0]} color="#059669" title="Web Dev" />
-      
-      <OrbitControls enableZoom={false} />
+    <Canvas className="h-screen w-full">
+      <ScrollControls pages={3} damping={0.2}>
+        <SceneContent />
+        <Scroll html>
+          <div className="h-screen w-screen flex items-center justify-center"><h1>Scroll Down</h1></div>
+          <div className="h-screen w-screen flex items-center justify-center"><h1>About Me</h1></div>
+          <div className="h-screen w-screen flex items-center justify-center"><h1>Projects</h1></div>
+        </Scroll>
+      </ScrollControls>
     </Canvas>
   );
 }
